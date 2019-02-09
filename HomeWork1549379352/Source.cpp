@@ -93,18 +93,17 @@ void ReorderingArray(T arr[], int n)
 	}
 }
 
-void InvertDigits(int k)
+void InvertDigits(int& k)
 {
-	int b, buf, c, i=0, s=0;
+	int buf, i = 0, s = 0;
 
 	buf = k;
 
 	// Определяем разрядность числа для последующего перевода цифр в обратном порядке
 
-	while (k > 0)
+	while (buf > 0)
 	{
-		b = k / 10;
-		k = b;
+		buf /= 10;
 		i++;
 	}
 	
@@ -112,14 +111,46 @@ void InvertDigits(int k)
 
 	while (i >= 0)
 	{
-		if (buf % 10 == 0) buf *= 10;
-		s += buf%10 * pow(10, i-1);
-		buf /= 10;
+		if (k % 10 == 0) k *= 10;
+		s += k % 10 * pow(10, i - 1);
+		k /= 10;
 		i--;
 	}
 
 	cout <<"Invert number \t\t"<< s << endl;
 	
+}
+
+void AddRightDigit(int& k, int d)
+{
+	
+	// Добавляем к введенному числу k справа число d
+
+	k = k * 10 + d;
+
+	cout << "\nAdded digit to the number \t" << k << endl;
+
+}
+
+void AddLeftDigit(int& k, int d)
+{
+	// Определяем разрядность числа для последующего подстановки цифры слева
+
+	int b, i = 0;
+
+	b = k;
+	while (b > 0)
+	{
+		b/= 10;
+		i++;
+	}
+	
+	// Добавляем к введенному числу k слева число d
+
+	k += (pow(10, i) * d);
+
+	cout << "\nAdded digit to the number \t" << k << endl;
+
 }
 
 
@@ -156,14 +187,34 @@ void Task2()
 	cout << "\n--------------------------------------------------------------------------\n\nTask2\n\n";
 	SetConsoleTextAttribute(hConsole, 7);
 
-	int const n = 10;
+	int count = 0, k = 0, d = 0;
+	char flag = 'n';
 
-	int arr[n] = { 0 };
+	cout << "\nEnter number k -> \t\t";
+	cin >> k;
+	
+	do
+	{
+		int check = 1;
 
-	FillArray(arr, n);
-	PrintArray(arr, n);
-	ReorderingArray(arr, n);
-	PrintArray(arr, n);
+		do
+		{
+			cout << "\nEnter digit d" << count + 1 << " from 0 to 9 -> \t";
+			cin >> d;
+			
+			if (d >= 0 && d <= 9) check = 0;
+			else cout << "\nWrong input, try again \n" << endl;
+		
+		} while (check);
+
+		count++;
+
+		AddRightDigit(k, d);
+
+		cout << "\n\nDo You want enter one more digit? (y/n) -> ";
+		cin >> flag;
+
+	} while (flag == 'y');
 
 }
 
@@ -177,8 +228,37 @@ void Task3()
 	cout << "\n--------------------------------------------------------------------------\n\nTask2\n\n";
 	SetConsoleTextAttribute(hConsole, 7);
 
+	int count = 0, k = 0, d = 0;
+	char flag = 'n';
+
+	cout << "\nEnter number k -> \t\t";
+	cin >> k;
+
+	do
+	{
+		int check = 1;
+
+		do
+		{
+			cout << "\nEnter digit d" << count + 1 << " from 1 to 9 -> \t";
+			cin >> d;
+
+			if (d >= 1 && d <= 9) check = 0;
+			else cout << "\nWrong input, try again \n" << endl;
+
+		} while (check);
+
+		count++;
+
+		AddLeftDigit(k, d);
+
+		cout << "\n\nDo You want enter one more digit? (y/n) -> ";
+		cin >> flag;
+
+	} while (flag == 'y');
 
 }
+
 
 int main()
 {
